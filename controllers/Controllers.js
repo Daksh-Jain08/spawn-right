@@ -1,4 +1,5 @@
 const {Tasks} = require("../models/Task");
+let idCounter = 1;
 
 const createTask = async (req, res) => {
     try {
@@ -12,7 +13,8 @@ const createTask = async (req, res) => {
         if (!title) {
             return res.status(400).json({message: "Title is required"});
         }
-        const id = Tasks.length + 1;
+        const id = idCounter++;
+        console.log("ID Counter:", idCounter);
         const task = {id, title, description, completed: false};
         Tasks.push(task);
         return res.status(201).json({message: "Task created successfully", task});
