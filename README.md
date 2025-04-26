@@ -50,6 +50,8 @@ npm test
     ```
 
 - **GET**: Get all tasks
+  - **Query parameters** (optional):
+    - `completed`: Filter tasks based on their completion status (`true` or `false`).
   - **Response**:
     ```json
     {
@@ -65,6 +67,9 @@ npm test
         ...
       ]
     }
+  - **Example**: To get all completed tasks, you can send the following request:
+    ```
+    GET /tasks?completed=true
     ```
 
 ### `/tasks/:id`
