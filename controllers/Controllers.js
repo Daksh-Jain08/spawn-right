@@ -26,6 +26,14 @@ const createTask = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
     try {
+        const completed = req.query.completed;
+        if (completed !== undefined) {
+            const filteredTasks = Tasks.filter(task => task.completed === (completed === 'true'));
+            return res.status(200).json({message: "Tasks retrieved successfully", tasks: filteredTasks});
+        }
+        if (Tasks.length === 0) {
+            return res.status(404).json({message: "No tasks found"});
+        }
         return res.status(200).json({message: "Tasks retrieved successfully", tasks: Tasks});
     } catch (error) {
         console.error("Error retrieving tasks:", error);
@@ -64,8 +72,10 @@ const updateTask = async (req, res) => {
         if (description) {
             Tasks[taskIndex].description = description;
         }
-        if (completed !== undefined) {
+        if (completed !== undefined && typeof completed === "boolean") {
             Tasks[taskIndex].completed = completed;
+        } else {
+            return res.status(400).json({message: "Completed must be a boolean value"});
         }
         Tasks[taskIndex].updatedAt = new Date();
         return res.status(200).json({message: "Task updated successfully", task: Tasks[taskIndex]});
