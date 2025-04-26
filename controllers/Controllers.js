@@ -15,7 +15,7 @@ const createTask = async (req, res) => {
         }
         const id = idCounter++;
         console.log("ID Counter:", idCounter);
-        const task = {id, title, description, completed: false};
+        const task = {id, title, description, completed: false, createdAt: new Date(), updatedAt: new Date()};
         Tasks.push(task);
         return res.status(201).json({message: "Task created successfully", task});
     } catch (error) {
@@ -67,6 +67,7 @@ const updateTask = async (req, res) => {
         if (completed !== undefined) {
             Tasks[taskIndex].completed = completed;
         }
+        Tasks[taskIndex].updatedAt = new Date();
         return res.status(200).json({message: "Task updated successfully", task: Tasks[taskIndex]});
     } catch (error) {
         console.error("Error updating task:", error);
